@@ -1,6 +1,10 @@
-FROM php:8.2-fpm
+# PHP Dockerfile for Laravel
+FROM php:8.2-cli
 
-# Install system dependencies
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -8,30 +12,42 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip \
-    libzip-dev
+    unzip
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
-WORKDIR /var/www
+# Copy composer files first for dependency installation
+COPY composer.json composer.lock* ./
 
-# Copy existing application directory contents
+# Install dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction || true
+
+# Copy application files
 COPY . .
 
-# Copy existing application directory permissions
-COPY --chown=www-data:www-data . /var/www
+# Dump autoload to ensure all classes are registered
+RUN composer dump-autoload --optimize
 
-# Change current user to www-data
-USER www-data
+# Ensure required directories exist and set permissions
+RUN mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php-fpm"]
+# Generate app key
+RUN php artisan key:generate --ansi --force || true
+
+# Copy entrypoint script
+COPY railway-start.sh /railway-start.sh
+RUN chmod +x /railway-start.sh
+
+# Expose port
+EXPOSE $PORT
+
+# Use entrypoint to ensure storage permissions before starting
+ENTRYPOINT ["/railway-start.sh"]

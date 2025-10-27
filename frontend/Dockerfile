@@ -1,4 +1,4 @@
-# Build stage
+# Multi-stage build for React app
 FROM node:18-alpine as build
 
 WORKDIR /app
@@ -7,25 +7,33 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm install --legacy-peer-deps
 
-# Copy source code
+# Copy application code
 COPY . .
 
 # Build the app
 RUN npm run build
 
-# Production stage
+# Production stage with Nginx
 FROM nginx:alpine
 
-# Copy built app to nginx
-COPY --from=build /app/dist /usr/share/nginx/html
+# Install gettext for envsubst (to substitute environment variables)
+RUN apk add --no-cache gettext
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+WORKDIR /usr/share/nginx/html
 
-# Expose port
-EXPOSE 80
+# Remove default Nginx static assets
+RUN rm -rf ./*
 
-# Start nginx
+# Copy built assets from build stage
+COPY --from=build /app/dist .
+
+# Copy Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port (Railway will provide this)
+EXPOSE 8080
+
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
