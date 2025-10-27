@@ -1,0 +1,43 @@
+# Multi-stage build for Railway
+FROM node:18-alpine as frontend-build
+WORKDIR /app/frontend
+COPY frontend/package*.json ./
+RUN npm ci
+COPY frontend/ .
+RUN npm run build
+
+FROM php:8.2-fpm as backend-build
+WORKDIR /var/www
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git curl libpng-dev libonig-dev libxml2-dev zip unzip libzip-dev nginx
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copy backend
+COPY backend/ .
+RUN composer install --no-dev --optimize-autoloader
+
+# Final image
+FROM php:8.2-fpm
+WORKDIR /var/www
+
+# Copy built frontend
+COPY --from=frontend-build /app/frontend/dist /var/www/public/frontend
+
+# Copy backend
+COPY --from=backend-build /var/www /var/www
+
+# Copy nginx config
+COPY railway-nginx.conf /etc/nginx/sites-available/default
+
+# Start script
+COPY railway-start.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/railway-start.sh
+
+CMD ["/usr/local/bin/railway-start.sh"]

@@ -1,0 +1,26 @@
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    padding: 0 var(--space-2xl);
+    
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    
+    .header-right {
+      display: flex;
+      align-items: center;
+      
+      .user-name {
+        font-family: var(--font-public-sans);
+        font-size: var(--text-sm);
+        font-weight: 500;
+        line-height: var(--line-height-tight);
+        color: var(--text-primary);
+      }
+    }
+  }

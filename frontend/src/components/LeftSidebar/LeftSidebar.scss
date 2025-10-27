@@ -1,0 +1,119 @@
+.left-sidebar {
+  background: var(--white);
+  border-right: 1px solid var(--border-color);
+  // height: 100vh;
+  height: calc(100vh - var(--header-height));
+  position: fixed;
+  left: 0;
+  top: var(--header-height);
+  z-index: 100;
+  
+  .sidebar-content {
+    padding: 20px 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    .sidebar-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      
+      .angle-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 16px;
+        
+        .angle-btn {
+          width: 40px;
+          height: 40px;
+          
+          .slanted-icon {
+            transform: rotate(45deg);
+          }
+        }
+      }
+      
+      .sidebar-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 18px;
+        margin-bottom: 8px;
+        
+        &:hover {
+          background: rgba(3, 95, 91, 0.1);
+          color: var(--primary-green);
+        }
+      }
+      
+      .page-navigation {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        margin: 16px 0;
+        
+        .nav-btn {
+          width: 32px;
+          height: 32px;
+          font-size: 12px;
+        }
+        
+        .page-numbers {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 2px;
+          
+          .page-current {
+            font-family: var(--font-public-sans);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+          }
+          
+          .page-separator {
+            font-family: var(--font-public-sans);
+            font-size: 12px;
+            color: var(--text-secondary);
+          }
+          
+          .page-total {
+            font-family: var(--font-public-sans);
+            font-size: 12px;
+            color: var(--text-secondary);
+          }
+        }
+      }
+      
+      .zoom-controls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        margin-top: 16px;
+        
+        .zoom-btn {
+          width: 32px;
+          height: 32px;
+          font-size: 12px;
+        }
+        
+        .zoom-level {
+          font-family: var(--font-public-sans);
+          font-size: 11px;
+          color: var(--text-secondary);
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+// Ensure main content doesn't get hidden behind fixed sidebar
+.main-content-with-sidebar {
+  margin-left: 80px;
+}

@@ -1,0 +1,2 @@
+# Create and setup everything in one go
+npm create vite@latest frontend -- --template react && cd frontend && npm install && npm install react-router-dom @reduxjs/toolkit react-redux axios antd @ant-design/icons @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities sass && npm run dev

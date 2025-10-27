@@ -1,0 +1,32 @@
+.right-sidebar {
+    background: var(--white);
+    border-left: 1px solid var(--border-color);
+    
+    .sidebar-content {
+      padding: var(--space-lg);
+      
+      .sidebar-header {
+        margin-bottom: var(--space-md);
+      }
+      
+      .elements-list {
+        .element-card {
+          margin-bottom: var(--space-sm);
+          cursor: grab;
+          
+          &:active {
+            cursor: grabbing;
+          }
+          
+          .element-icon {
+            font-size: 16px;
+            color: var(--primary-green);
+          }
+          
+          .element-info {
+            text-align: left;
+          }
+        }
+      }
+    }
+  }

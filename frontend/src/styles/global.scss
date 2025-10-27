@@ -1,0 +1,90 @@
+// Import Ant Design styles
+@import 'antd/dist/reset.css';
+
+// Font imports
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Public+Sans:wght@400;500;600;700&display=swap');
+
+// Design Tokens
+:root {
+  // Colors
+  --primary-green: #035F5B;
+  --white: #FFFFFF;
+  --border-color: #DFE1EC;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --background: #F8F9FA;
+  --shadow: 0px 4px 4px 0px #0000000D;
+
+  // Typography
+  --font-roboto: 'Roboto', sans-serif;
+  --font-public-sans: 'Public Sans', sans-serif;
+  
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  
+  --line-height-tight: 18px;
+  --line-height-normal: 160%;
+
+  // Spacing
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 40px;
+  --space-3xl: 48px;
+
+  // Layout
+  --header-height: 60px;
+  --sidebar-width: 312px;
+  --right-panel-width: 320px;
+}
+
+// Global Reset
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-roboto);
+  font-weight: 400;
+  font-size: var(--text-base);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
+  background-color: var(--white);
+}
+
+// Utility Classes
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.font-roboto { font-family: var(--font-roboto); }
+.font-public-sans { font-family: var(--font-public-sans); }
+
+// Ant Design Overrides
+.ant-btn-primary {
+  background: var(--primary-green) !important;
+  border-color: var(--primary-green) !important;
+  
+  &:hover {
+    background: #024a47 !important;
+    border-color: #024a47 !important;
+  }
+}
+
+.ant-layout {
+  background: var(--white) !important;
+}
+
+.ant-layout-header {
+  background: var(--white) !important;
+  border-top: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow) !important;
+  height: var(--header-height) !important;
+  line-height: var(--header-height) !important;
+  padding: 0 var(--space-2xl) !important;
+}
