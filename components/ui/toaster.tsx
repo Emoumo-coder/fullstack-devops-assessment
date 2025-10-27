@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useToast } from '@/hooks/use-toast'
 import {
   Toast,
@@ -12,13 +13,19 @@ import {
 
 export function Toaster() {
   const { toasts } = useToast()
+  const [mounted, setMounted] = useState(false)
 
-  console.log('Toaster rendering with toasts:', toasts)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
 
   return (
     <ToastProvider>
       {toasts.map(function ({ id, title, description, action, ...props }) {
-        console.log('Rendering toast:', { id, title, description, action, props })
         return (
           <Toast key={id} {...props}>
             <div className="grid gap-1">
@@ -26,7 +33,6 @@ export function Toaster() {
               {description && (
                 <ToastDescription>{description}</ToastDescription>
               )}
-              {/* {console.log('Toast content:', { title, description })} */}
             </div>
             {action}
             <ToastClose />
