@@ -1,8 +1,10 @@
 [build]
-builder = "docker"
+builder = "DOCKER"
 
 [deploy]
 startCommand = "docker-compose up"
 
-[environments.production.variables]
-NODE_ENV = "production"
+[environments]
+  [environments.production]
+    [environments.production.variables]
+      NODE_ENV = "production"
