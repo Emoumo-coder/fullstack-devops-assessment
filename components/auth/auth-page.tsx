@@ -3,6 +3,7 @@
 import type React from "react"
 import { useState } from "react"
 import { useAuth } from "@/lib/auth-context"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -12,6 +13,7 @@ import { useToast } from "@/hooks/use-toast"
 export function AuthPage() {
   const { login, register, error: authError } = useAuth()
   const { toast } = useToast()
+  const router = useRouter()
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState("demo@example.com")
   const [password, setPassword] = useState("demo1237")
@@ -30,7 +32,9 @@ export function AuthPage() {
         toast({
           title: "Login successful",
           description: "Welcome back!",
+          style: { color: 'green' },
         })
+        router.push("/builder")
       } else {
         if (!name.trim()) {
           setError("Please enter your name")
@@ -41,13 +45,16 @@ export function AuthPage() {
         toast({
           title: "Registration successful",
           description: "Your account has been created successfully.",
+          style: { color: 'green' },
         })
+        router.push("/builder")
       }
     } catch (err) {
       toast({
         title: "Authentication failed",
         description: authError || "Please check your credentials and try again.",
         variant: "destructive",
+        style: { color: 'white' },
       })
       setError(authError || "Authentication failed")
     } finally {

@@ -1,20 +1,17 @@
 "use client"
 
 import { useAuth } from "@/lib/auth-context"
+import { FormBuilderPage } from "@/components/form-builder/form-builder-page"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
-export default function Home() {
+export default function BuilderPage() {
   const { isAuthenticated, isLoading } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    if (!isLoading) {
-      if (isAuthenticated) {
-        router.push("/builder")
-      } else {
-        router.push("/login")
-      }
+    if (!isLoading && !isAuthenticated) {
+      router.push("/login")
     }
   }, [isAuthenticated, isLoading, router])
 
@@ -29,5 +26,9 @@ export default function Home() {
     )
   }
 
-  return null
+  if (!isAuthenticated) {
+    return null
+  }
+
+  return <FormBuilderPage />
 }

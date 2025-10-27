@@ -75,7 +75,7 @@ class ApiClient {
 
     // Add a timeout to avoid hanging requests
     const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 10000)
+    const timeout = setTimeout(() => controller.abort(), 30000) // Increased to 30 seconds
 
     let response: Response
     try {
@@ -84,6 +84,11 @@ class ApiClient {
         headers,
         signal: controller.signal,
       })
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw new Error('Request timed out. Please check your connection and try again.')
+      }
+      throw error
     } finally {
       clearTimeout(timeout)
     }

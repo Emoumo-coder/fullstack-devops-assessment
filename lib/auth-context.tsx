@@ -87,11 +87,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await apiClient.logout()
     } catch (err) {
+      // Ignore logout errors as they're not critical
       console.error("Logout error:", err)
-    } finally {
-      localStorage.removeItem("authToken")
-      setUser(null)
     }
+    // Always clear local state regardless of API call success
+    localStorage.removeItem("authToken")
+    setUser(null)
   }
 
   return (
