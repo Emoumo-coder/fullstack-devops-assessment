@@ -12,8 +12,11 @@ RUN npm install --legacy-peer-deps
 # Copy application code
 COPY . .
 
-# Build the app
-RUN npm run build
+# Specify the build-time environment variables you need
+ARG VITE_API_URL
+
+# Use the variables during build - Build the app
+RUN VITE_API_URL=${VITE_API_URL} npm run build
 
 # Production stage with Nginx
 FROM nginx:alpine
